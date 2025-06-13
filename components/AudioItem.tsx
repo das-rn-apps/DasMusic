@@ -8,10 +8,8 @@ import {
     Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import moment from "moment";
 import { Colors } from "@/constants/Colors";
 import { YouTubeVideo } from "@/types";
-import { formatYouTubeDuration } from "@/utils/time";
 
 interface AudioItemProps {
     video: YouTubeVideo;
@@ -59,16 +57,6 @@ const AudioItem: React.FC<AudioItemProps> = ({ video, onPress, isActive }) => {
         };
     }, [isActive]);
 
-    const { snippet, statistics, contentDetails } = video;
-    const publishedDate = snippet?.publishedAt
-        ? moment(snippet.publishedAt).format("MMM YYYY")
-        : "Unknown";
-
-    const viewCount = statistics?.viewCount ?? "0";
-    const likeCount = statistics?.likeCount ?? "0";
-    const commentCount = statistics?.commentCount ?? "0";
-    const duration = formatYouTubeDuration(contentDetails?.duration ?? "PT0M0S");
-
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -77,7 +65,7 @@ const AudioItem: React.FC<AudioItemProps> = ({ video, onPress, isActive }) => {
         >
             {/* Thumbnail */}
             <Image
-                source={{ uri: snippet?.thumbnails?.medium?.url }}
+                source={{ uri: video?.thumbnail }}
                 style={styles.thumbnail}
             />
 
@@ -87,40 +75,13 @@ const AudioItem: React.FC<AudioItemProps> = ({ video, onPress, isActive }) => {
                     style={[styles.title, isActive && styles.activeTitle]}
                     numberOfLines={1}
                 >
-                    {snippet?.title ?? "Untitled"}
-                </Text>
-                <Text style={styles.channel} numberOfLines={1}>
-                    {snippet?.channelTitle ?? "Unknown Channel"}
+                    {video?.title ?? "Untitled"}
                 </Text>
 
                 {/* Metadata Row */}
-                <View style={styles.metaRow}>
-                    <Text style={styles.metaText}>{publishedDate}</Text>
-
-                    <View style={styles.iconText}>
-                        <Ionicons name="eye" size={14} color={Colors.icon.default} />
-                        <Text style={styles.metaText}>{viewCount}</Text>
-                    </View>
-
-                    <View style={styles.iconText}>
-                        <Ionicons name="thumbs-up" size={14} color={Colors.icon.default} />
-                        <Text style={styles.metaText}>{likeCount}</Text>
-                    </View>
-
-                    <View style={styles.iconText}>
-                        <Ionicons
-                            name="chatbubble"
-                            size={14}
-                            color={Colors.icon.default}
-                        />
-                        <Text style={styles.metaText}>{commentCount}</Text>
-                    </View>
-
-                    <View style={styles.iconText}>
-                        <Ionicons name="time" size={14} color={Colors.icon.default} />
-                        <Text style={styles.metaText}>{duration}</Text>
-                    </View>
-                </View>
+                <Text style={styles.channel} numberOfLines={1}>
+                    {video?.channelTitle ?? "Unknown Channel"}
+                </Text>
             </View>
 
             {/* Animated Equalizer */}
@@ -178,23 +139,6 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: Colors.text.subtle,
         marginTop: 2,
-    },
-    metaRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: 5,
-        marginTop: 2,
-    },
-    iconText: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 4,
-        marginRight: 2,
-    },
-    metaText: {
-        fontSize: 12,
-        color: Colors.text.artist,
     },
     equalizer: {
         flexDirection: "row",
