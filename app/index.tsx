@@ -80,6 +80,7 @@ const IndexScreen = () => {
       </View>
 
       {/* 🔸 Video Player */}
+
       {selectedVideo && (
         <VideoPlayer
           video={selectedVideo}
@@ -89,11 +90,14 @@ const IndexScreen = () => {
       )}
 
       {/* 🔸 Audio List */}
-      <FlatList
-        data={videos}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-      />
+      <View style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 9 }}>
+        <FlatList
+          data={videos}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+        />
+      </View>
+
 
       <SearchModal
         visible={modalVisible}
@@ -111,19 +115,19 @@ export default IndexScreen;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 40,
     backgroundColor: Colors.background.app,
     flex: 1,
-    padding: 10
+    paddingHorizontal: 10
   },
   headerRow: {
+    paddingTop: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginBottom: 10,
-    zIndex: 2
   },
   header: {
+    zIndex: 10,
     fontSize: 32,
     fontWeight: 'bold',
     textAlign: 'left',
@@ -137,47 +141,6 @@ const styles = StyleSheet.create({
   },
   searchButton: {
     padding: 10,
-  },
-  modalContainer: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: Colors.background.app,
-  },
-  modalHeader: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: Colors.text.artist,
-    marginBottom: 15,
-  },
-  searchInput: {
-    backgroundColor: Colors.background.card,
-    padding: 12,
-    borderRadius: 10,
-    fontSize: 16,
-    color: Colors.text.artist,
-    marginBottom: 20,
-  },
-  resultItem: {
-    paddingVertical: 12,
-    borderBottomColor: Colors.divider,
-    borderBottomWidth: 1,
-  },
-  trackTitle: {
-    fontSize: 16,
-    color: Colors.text.artist,
-  },
-  trackArtist: {
-    fontSize: 13,
-    color: Colors.text.subtle,
-  },
-  noResult: {
-    marginTop: 20,
-    textAlign: 'center',
-    color: Colors.text.subtle,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 30,
-    right: 20,
-  },
+    zIndex: 10,
+  }
 });

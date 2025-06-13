@@ -10,10 +10,8 @@ interface VideoPlayerProps {
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, playing, onEnd }) => {
-    const screenWidth = Dimensions.get("window").width;
-    const screenHeight = (screenWidth * 9) / 18; // Maintain aspect ratio
+    const { height } = Dimensions.get("window");
 
-    // Fallback for missing video ID
     const videoId = video?.id;
     if (!videoId) {
         console.warn("Video ID is missing. Cannot render YouTube player.");
@@ -25,10 +23,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, playing, onEnd }) => {
     }
 
     return (
-        <View style={styles.playerContainer}>
+        <View style={styles.fullscreen}>
             <YouTubeIframe
-                height={screenHeight}
-                width={screenWidth}
+                height={height * 1.2}
+                width={height * 2.4}
                 play={playing}
                 videoId={videoId}
                 onChangeState={(state: string) => {
@@ -48,11 +46,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, playing, onEnd }) => {
 export default VideoPlayer;
 
 const styles = StyleSheet.create({
-    playerContainer: {
+    fullscreen: {
         alignItems: "center",
         justifyContent: "center",
-        zIndex: 1,
-        marginTop: -140,
+        zIndex: 2,
+        marginTop: -300,
     },
     errorContainer: {
         alignItems: "center",

@@ -72,7 +72,7 @@ export default SearchModal;
 const styles = StyleSheet.create({
     modalContainer: {
         flex: 1,
-        margin: 50,
+        margin: 20,
         padding: 20,
         borderRadius: 10,
         backgroundColor: Colors.background.modal,
@@ -87,12 +87,12 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.background.card,
         padding: 12,
         borderRadius: 10,
-        fontSize: 16,
+        fontSize: 20,
         color: Colors.text.artist,
         marginBottom: 10,
     },
     suggestionItem: {
-        paddingVertical: 12,
+        paddingVertical: 7,
         borderBottomColor: Colors.divider,
         borderBottomWidth: 1,
     },
