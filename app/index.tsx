@@ -25,6 +25,7 @@ const IndexScreen = () => {
     try {
       const searchingSong = song || query
       const { videos: fetchedVideos } = await fetchVideos(searchingSong);
+      // console.log(fetchedVideos);
       setVideos(fetchedVideos);
       setSelectedVideo(null);
     } catch (error) {

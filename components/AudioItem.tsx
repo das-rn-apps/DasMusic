@@ -10,6 +10,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { YouTubeVideo } from "@/types";
+import { formatPublishedDate } from "@/utils/time";
 
 interface AudioItemProps {
     video: YouTubeVideo;
@@ -79,9 +80,15 @@ const AudioItem: React.FC<AudioItemProps> = ({ video, onPress, isActive }) => {
                 </Text>
 
                 {/* Metadata Row */}
-                <Text style={styles.channel} numberOfLines={1}>
-                    {video?.channelTitle ?? "Unknown Channel"}
-                </Text>
+                <View style={styles.metaRow}>
+                    <Text style={styles.channel} numberOfLines={1}>
+                        {video?.channelTitle ?? "Unknown Channel"}
+                    </Text>
+                    <Ionicons name="time" size={14} color={Colors.icon.default} />
+                    <Text style={styles.time} numberOfLines={1}>
+                        {formatPublishedDate(video.publishedAt)}
+                    </Text>
+                </View>
             </View>
 
             {/* Animated Equalizer */}
@@ -139,7 +146,20 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: Colors.text.subtle,
         marginTop: 2,
+        marginRight: 10
     },
+    time: {
+        fontSize: 13,
+        color: Colors.text.subtle,
+        margin: 2,
+    },
+    metaRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        flexWrap: "wrap",
+        marginTop: 5,
+    },
+
     equalizer: {
         flexDirection: "row",
         alignItems: "center",

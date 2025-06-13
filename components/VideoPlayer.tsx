@@ -25,7 +25,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, playing, onEnd }) => {
     return (
         <View style={styles.fullscreen}>
             <YouTubeIframe
-                height={height * 1.2}
+                height={height * 1.25}
                 width={height * 2.4}
                 play={playing}
                 videoId={videoId}
