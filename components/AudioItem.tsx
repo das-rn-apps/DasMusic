@@ -150,14 +150,10 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: Colors.background.card,
         paddingVertical: 10,
         paddingHorizontal: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.border,
     },
     activeContainer: {
-        backgroundColor: Colors.background.modal,
     },
     thumbnail: {
         width: 55,
@@ -187,18 +183,18 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         flexWrap: "wrap",
-        gap: 10,
-        marginTop: 4,
+        gap: 5,
+        marginTop: 2,
     },
     iconText: {
         flexDirection: "row",
         alignItems: "center",
         gap: 4,
-        marginRight: 10,
+        marginRight: 2,
     },
     metaText: {
         fontSize: 12,
-        color: Colors.text.placeholder,
+        color: Colors.text.artist,
     },
     equalizer: {
         flexDirection: "row",
@@ -206,7 +202,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         width: 18,
         height: 20,
-        marginLeft: 8,
+        marginLeft: 2,
     },
     equalizerBar: {
         width: 3,
