@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.dasrnapps.dasmusic"
     },
     "web": {
       "bundler": "metro",
