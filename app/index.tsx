@@ -17,6 +17,7 @@ import {
 
 const IndexScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [query, setQuery] = useState('Latest indian bollywod songs');
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);
   const [selectedVideo, setSelectedVideo] = useState<YouTubeVideo | null>(null);
@@ -89,15 +90,21 @@ const IndexScreen = () => {
           onEnd={() => setSelectedVideo(null)}
         />
       )}
+      <TouchableOpacity onPress={() => setVisible(!visible)} style={styles.musicListHide}>
+        <Ionicons name="list" size={50} color={Colors.button.primaryBackground} />
+      </TouchableOpacity>
 
       {/* 🔸 Audio List */}
-      <View style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 9 }}>
-        <FlatList
-          data={videos}
-          keyExtractor={keyExtractor}
-          renderItem={renderItem}
-        />
-      </View>
+      {
+        visible &&
+        <View style={{ position: "absolute", top: 0, left: 10, width: "100%", height: "100%", zIndex: 9 }}>
+          <FlatList
+            data={videos}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
+          />
+        </View>
+      }
 
 
       <SearchModal
@@ -143,5 +150,12 @@ const styles = StyleSheet.create({
   searchButton: {
     padding: 10,
     zIndex: 10,
+  }
+  ,
+  musicListHide: {
+    zIndex: 10,
+    position: "absolute",
+    bottom: 30,
+    right: 30
   }
 });
