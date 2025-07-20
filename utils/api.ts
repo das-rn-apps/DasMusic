@@ -1,4 +1,3 @@
-// @/src/api.ts
 import { YouTubeVideo } from "@/types";
 import axios from "axios";
 
@@ -23,7 +22,7 @@ export const fetchVideos = async (
         params: {
           key: API_KEY,
           part: "snippet",
-          maxResults: 25,
+          maxResults: 50,
           q: `${
             searchQuery || "Indian"
           } "official songs" OR "lyrics" OR "music"`,
@@ -34,40 +33,57 @@ export const fetchVideos = async (
     );
 
     const searchItems = searchResponse.data.items ?? [];
-
     const videoIds = searchItems
       .map((item: any) => item.id?.videoId)
       .filter(Boolean);
+
     if (videoIds.length === 0) return { videos: [] };
 
-    // 🔹 Step 2: Get duration only
+    // 🔹 Step 2: Fetch statistics & contentDetails
     const detailsResponse = await axios.get(
       "https://www.googleapis.com/youtube/v3/videos",
       {
         params: {
           key: API_KEY,
-          part: "contentDetails",
+          part: "contentDetails,statistics",
           id: videoIds.join(","),
         },
       }
     );
 
-    const detailsMap = new Map<string, string>();
+    const detailsMap = new Map<
+      string,
+      { duration: string; views: string; likes: string; comments: string }
+    >();
+
     for (const item of detailsResponse.data.items ?? []) {
-      detailsMap.set(item.id, item.contentDetails?.duration ?? "N/A");
+      detailsMap.set(item.id, {
+        duration: item.contentDetails?.duration ?? "N/A",
+        views: item.statistics?.viewCount ?? "0",
+        likes: item.statistics?.likeCount ?? "0",
+        comments: item.statistics?.commentCount ?? "0",
+      });
     }
 
-    // 🔹 Merge and Return
-    const videos: YouTubeVideo[] = searchItems.map((item: any) => ({
-      id: item.id?.videoId,
-      title: item.snippet?.title,
-      description: item.snippet?.description,
-      channelId: item.snippet?.channelId,
-      channelTitle: item.snippet?.channelTitle,
-      publishedAt: item.snippet?.publishedAt,
-      thumbnail: item.snippet?.thumbnails?.high?.url,
-      duration: detailsMap.get(item.id?.videoId) || "N/A",
-    }));
+    // 🔹 Merge Search and Detail Data
+    const videos: YouTubeVideo[] = searchItems.map((item: any) => {
+      const id = item.id?.videoId;
+      const stats = detailsMap.get(id);
+
+      return {
+        id: id || "",
+        title: item.snippet?.title || "Untitled",
+        description: item.snippet?.description || "",
+        channelId: item.snippet?.channelId || "",
+        channelTitle: item.snippet?.channelTitle || "",
+        publishedAt: item.snippet?.publishedAt || "",
+        thumbnail: item.snippet?.thumbnails?.high?.url || "",
+        duration: stats?.duration || "N/A",
+        views: stats?.views || "0",
+        likes: stats?.likes || "0",
+        comments: stats?.comments || "0",
+      };
+    });
 
     return { videos };
   } catch (error) {

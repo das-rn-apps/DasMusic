@@ -10,7 +10,10 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { YouTubeVideo } from "@/types";
-import { formatPublishedDate } from "@/utils/time";
+import { formatDuration, formatPublishedDate } from "@/utils/time";
+
+
+
 
 interface AudioItemProps {
     video: YouTubeVideo;
@@ -25,7 +28,6 @@ const AudioItem: React.FC<AudioItemProps> = ({ video, onPress, isActive }) => {
         new Animated.Value(1),
     ]).current;
 
-    // Handle animated equalizer when isActive
     useEffect(() => {
         let loopAnim: Animated.CompositeAnimation | null = null;
 
@@ -51,7 +53,6 @@ const AudioItem: React.FC<AudioItemProps> = ({ video, onPress, isActive }) => {
             animate();
         }
 
-        // Cleanup
         return () => {
             if (loopAnim) loopAnim.stop();
             animValues.forEach((v) => v.stopAnimation());
@@ -64,34 +65,35 @@ const AudioItem: React.FC<AudioItemProps> = ({ video, onPress, isActive }) => {
             style={[styles.container, isActive && styles.activeContainer]}
             activeOpacity={0.9}
         >
-            {/* Thumbnail */}
-            <Image
-                source={{ uri: video?.thumbnail }}
-                style={styles.thumbnail}
-            />
+            <Image source={{ uri: video?.thumbnail }} style={styles.thumbnail} />
 
-            {/* Details */}
             <View style={styles.details}>
-                <Text
-                    style={[styles.title, isActive && styles.activeTitle]}
-                    numberOfLines={1}
-                >
+                <Text style={[styles.title, isActive && styles.activeTitle]} numberOfLines={1}>
                     {video?.title ?? "Untitled"}
                 </Text>
 
-                {/* Metadata Row */}
+                <Text style={styles.channel} numberOfLines={1}>
+                    {video?.channelTitle ?? "Unknown Channel"}
+                </Text>
+
                 <View style={styles.metaRow}>
-                    <Text style={styles.channel} numberOfLines={1}>
-                        {video?.channelTitle ?? "Unknown Channel"}
-                    </Text>
-                    <Ionicons name="time" size={14} color={Colors.icon.default} />
-                    <Text style={styles.time} numberOfLines={1}>
-                        {formatPublishedDate(video.publishedAt)}
-                    </Text>
+                    <Ionicons name="time-outline" size={14} color={Colors.icon.default} />
+                    <Text style={styles.metaText}>{formatPublishedDate(video.publishedAt)}</Text>
+
+                    <Ionicons name="eye-outline" size={14} color={Colors.icon.default} />
+                    <Text style={styles.metaText}>{video.views}</Text>
+
+                    <Ionicons name="thumbs-up-outline" size={14} color={Colors.icon.default} />
+                    <Text style={styles.metaText}>{video.likes}</Text>
+
+                    <Ionicons name="chatbubble-ellipses-outline" size={14} color={Colors.icon.default} />
+                    <Text style={styles.metaText}>{video.comments}</Text>
+
+                    <Ionicons name="musical-notes-outline" size={14} color={Colors.icon.default} />
+                    <Text style={styles.metaText}>{formatDuration(video.duration)}</Text>
                 </View>
             </View>
 
-            {/* Animated Equalizer */}
             {isActive && (
                 <View style={styles.equalizer}>
                     {animValues.map((value, index) => (
@@ -143,23 +145,22 @@ const styles = StyleSheet.create({
         color: Colors.button.primaryBackground,
     },
     channel: {
-        fontSize: 13,
+        fontSize: 12,
         color: Colors.text.subtle,
-        marginTop: 2,
-        marginRight: 10
-    },
-    time: {
-        fontSize: 13,
-        color: Colors.text.subtle,
-        margin: 2,
+        marginTop: 1,
     },
     metaRow: {
         flexDirection: "row",
-        alignItems: "center",
         flexWrap: "wrap",
-        marginTop: 5,
+        alignItems: "center",
+        marginTop: 1,
+        gap: 2,
     },
-
+    metaText: {
+        fontSize: 11,
+        color: Colors.text.subtle,
+        marginRight: 8,
+    },
     equalizer: {
         flexDirection: "row",
         alignItems: "center",

@@ -6,4 +6,8 @@ export interface YouTubeVideo {
   channelTitle: string;
   publishedAt: string;
   thumbnail: string;
+  duration: string;
+  views: string;
+  likes: string;
+  comments: string;
 }
